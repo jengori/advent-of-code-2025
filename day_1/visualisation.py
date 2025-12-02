@@ -1,7 +1,7 @@
 import pygame
 import math
 
-with open('input.txt', 'r') as f:
+with open('test_input.txt', 'r') as f:
     r_words = [line.strip() for line in f.readlines()]
 
 r = [int(x[1:]) if x[0] == "R" else -int(x[1:])for x in r_words]
