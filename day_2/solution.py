@@ -28,8 +28,14 @@ def solve(invalid_ids: list[int]) -> int:
     return solution
 
 # Construct list of invalid IDs for Part 1 and Part 2
-part_1_invalid_ids = [m * (10 ** n + 1) for n in range(1, 6) for m in range(10 ** (n -1), 10 ** n)]
-part_2_invalid_ids = list(set([int(m * (10 ** (k * n) - 1) / (10 ** k - 1)) for k in range(1, 6) for m in range(10 ** (k - 1), 10 ** k) for n in range(2, 10 // k + 1)]))
+part_1_invalid_ids = [m * (10 ** n + 1)
+                      for n in range(1, 6)
+                      for m in range(10 ** (n - 1), 10 ** n)]
+
+part_2_invalid_ids = list(set([int(m * (10 ** (k * n) - 1) / (10 ** k - 1))
+                               for k in range(1, 6)
+                               for m in range(10 ** (k - 1), 10 ** k)
+                               for n in range(2, 10 // k + 1)]))
 
 print(f"Part 1 solution: {solve(part_1_invalid_ids)}")
 print(f"Part 2 solution: {solve(part_2_invalid_ids)}")
