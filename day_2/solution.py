@@ -1,47 +1,35 @@
-def solve(ranges: list[tuple], part: int):
-    all_invalid = []
+import bisect
 
-    for r in ranges:
-        invalid = []
+def in_ranges(n: int, ranges: list[tuple]) -> bool:
+    """
+    Returns True if an integer n is in any of the (inclusive, sorted, non-overlapping) list of ranges;
+    else returns False.
+    """
 
-        for n in range(r[0], r[1] + 1):
-            n_as_string = str(n)
-            l = len(n_as_string)
+    starts = [r[0] for r in ranges]
+    ends = [r[1] for r in ranges]
 
-            if l % 2 == 0:
-                split = int(l / 2)
+    i = bisect.bisect_right(starts, n) - 1
+    return i >= 0 and n <= ends[i]
 
-                if n_as_string[0:split] == n_as_string[split:]:
-                    invalid.append(n)
+def solve(invalid_ids: list[int]) -> int:
+    """Returns the solution for a given list of invalid ids."""
 
-            if part == 2:
-                if l != 1 and l % 2 != 0 and len(set(n_as_string)) == 1:
-                    if n not in invalid:
-                        invalid.append(n)
+    with open("input.txt") as f:
+        ranges = [(int(x.split("-")[0]), int(x.split("-")[1])) for x in f.read().split(",")]
+        ranges.sort(key=lambda x: (x[0]))
 
-                if l == 6 and n_as_string[0:2] == n_as_string[2:4] == n_as_string[4:]:
-                    if n not in invalid:
-                        invalid.append(n)
+    solution = 0
 
-                elif l == 8 and n_as_string[0:2] == n_as_string[2:4] == n_as_string[4:6] == n_as_string[6:]:
-                    if n not in invalid:
-                        invalid.append(n)
+    for invalid_id in invalid_ids:
+        if in_ranges(invalid_id, ranges):
+            solution += invalid_id
 
-                elif l == 9 and n_as_string[0:3] == n_as_string[3:6] == n_as_string[6:]:
-                    if n not in invalid:
-                        invalid.append(n)
+    return solution
 
-                elif l == 10 and n_as_string[0:2] == n_as_string[2:4] == n_as_string[4:6] == n_as_string[6:8] == n_as_string[8:]:
-                    if n not in invalid:
-                        invalid.append(n)
+# Construct list of invalid IDs for Part 1 and Part 2
+part_1_invalid_ids = [m * (10 ** n + 1) for n in range(1, 6) for m in range(10 ** (n -1), 10 ** n)]
+part_2_invalid_ids = list(set([int(m * (10 ** (k * n) - 1) / (10 ** k - 1)) for k in range(1, 6) for m in range(10 ** (k - 1), 10 ** k) for n in range(2, 10 // k + 1)]))
 
-        for invalid_id in invalid:
-            all_invalid.append(invalid_id)
-
-    return sum(all_invalid)
-
-with open("input.txt") as f:
-    ranges_ = [(int(x.split("-")[0]), int(x.split("-")[1])) for x in f.read().split(",")]
-
-print(f"Part 1 solution: {solve(ranges_, 1)}")
-print(f"Part 2 solution: {solve(ranges_, 2)}")
+print(f"Part 1 solution: {solve(part_1_invalid_ids)}")
+print(f"Part 2 solution: {solve(part_2_invalid_ids)}")
