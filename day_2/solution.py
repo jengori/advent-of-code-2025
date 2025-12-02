@@ -10,7 +10,7 @@ def in_ranges(n: int, ranges: list[tuple]) -> bool:
     ends = [r[1] for r in ranges]
 
     i = bisect.bisect_right(starts, n) - 1
-    return i >= 0 and n <= ends[i]
+    return n <= ends[i]
 
 def solve(invalid_ids: list[int]) -> int:
     """Returns the solution for a given list of invalid ids."""
