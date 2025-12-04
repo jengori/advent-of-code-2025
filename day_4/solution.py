@@ -35,7 +35,7 @@ class Grid:
                 (pos[0] + 1, pos[1]),
                 (pos[0] + 1, pos[1] + 1)]
 
-    def is_accessible_roll(self, pos: tuple) -> bool:
+    def is_accessible(self, pos: tuple) -> bool:
             roll_count = 0
             for neighbour in self.neighbours(pos):
                 if self.is_roll(neighbour):
@@ -49,7 +49,7 @@ class Grid:
         count = 0
         for row in range(1, self.height):
             for col in range(1, self.width):
-                if self.is_roll((row, col)) and  self.is_accessible_roll((row, col)):
+                if self.is_roll((row, col)) and  self.is_accessible((row, col)):
                     count += 1
 
         return count
@@ -58,7 +58,7 @@ class Grid:
         removed = 0
         for row in range(1, self.height):
             for col in range(1, self.width):
-                if self.is_roll((row, col)) and self.is_accessible_roll((row, col)):
+                if self.is_roll((row, col)) and self.is_accessible((row, col)):
                     self.rows[row][col] = '.'
                     removed += 1
 
