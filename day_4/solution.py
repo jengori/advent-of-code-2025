@@ -1,10 +1,19 @@
 class Grid:
+
+    OFFSETS = [(-1, -1), (-1, 0), (-1, 1),
+               (0, -1), (0, 1),
+               (1, -1), (1, 0), (1, 1)]
+
     def __init__(self, rows: list[list[str]]):
         self.rows = rows
         self.height = len(rows)
         self.width = len(rows[0])
         self.pad()
 
+        self.rolls = {(r, c)
+                      for r in range(self.height)
+                      for c in range(self.width)
+                      if self.rows[r][c] == '@'}
 
     def pad(self):
         self.rows.insert(0, ["."] * self.height)
@@ -18,68 +27,35 @@ class Grid:
         self.width += 2
 
 
-    def is_roll(self, pos: tuple) -> bool:
-        if self.rows[pos[0]][pos[1]] == '@':
-            return True
-        else:
-            return False
-
-    @staticmethod
-    def neighbours(pos: tuple):
-        return [(pos[0] - 1, pos[1] - 1),
-                (pos[0] - 1, pos[1]),
-                (pos[0] - 1, pos[1] + 1),
-                (pos[0], pos[1] - 1),
-                (pos[0], pos[1] + 1),
-                (pos[0] + 1, pos[1] - 1),
-                (pos[0] + 1, pos[1]),
-                (pos[0] + 1, pos[1] + 1)]
-
-    def is_accessible(self, pos: tuple) -> bool:
-            roll_count = 0
-            for neighbour in self.neighbours(pos):
-                if self.is_roll(neighbour):
-                    roll_count += 1
-
-            if roll_count < 4:
-                return True
-            return False
+    def is_accessible(self, pos):
+        r, c = pos
+        count = sum((r+dr, c+dc) in self.rolls for dr, dc in self.OFFSETS)
+        return count < 4
 
     def count_accessible_rolls(self):
-        count = 0
-        for row in range(1, self.height):
-            for col in range(1, self.width):
-                if self.is_roll((row, col)) and  self.is_accessible((row, col)):
-                    count += 1
-
-        return count
+        return sum(self.is_accessible(rc) for rc in self.rolls)
 
     def remove_accessible_rolls(self):
-        removed = 0
-        for row in range(1, self.height):
-            for col in range(1, self.width):
-                if self.is_roll((row, col)) and self.is_accessible((row, col)):
-                    self.rows[row][col] = '.'
-                    removed += 1
-
-        return removed
+        removable = {pos for pos in self.rolls if self.is_accessible(pos)}
+        for (r, c) in removable:
+            self.rows[r][c] = '.'
+        self.rolls -= removable
+        return len(removable)
 
     def max_removable_rolls(self):
-        increasing = True
-        total_removed = 0
-
-        while increasing:
+        total = 0
+        while True:
             removed = self.remove_accessible_rolls()
-            total_removed += removed
             if removed == 0:
-                increasing = False
+                break
+            total += removed
+        return total
 
-        return total_removed
+if __name__ == '__main__':
+    with open("input.txt") as f:
+        lst_ = [[char for char in line] for line in f.read().splitlines()]
 
-with open("input.txt") as f:
-    lst_ = [[char for char in line] for line in f.read().splitlines()]
+    grid = Grid(lst_)
 
-grid = Grid(lst_)
-
-print(f"Part 1 solution: {grid.count_accessible_rolls()}")
-print(f"Part 2 solution: {grid.max_removable_rolls()}")
+    print(f"Part 1 solution: {grid.count_accessible_rolls()}")
+    print(f"Part 2 solution: {grid.max_removable_rolls()}")
