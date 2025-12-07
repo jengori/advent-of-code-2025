@@ -1,7 +1,8 @@
 import numpy as np
 import solution_part_2
+from format_solutions import format_solution
 
-FILENAME = "test_input.txt"
+FILENAME = "input.txt"
 
 def read_input(filename):
     with (open(filename) as f):
@@ -38,5 +39,4 @@ def solve(filename):
     return total
 
 if __name__ == "__main__":
-    print(f"Part 1 solution: {solve(FILENAME)}")
-    print(f"Part 2 solution: {solution_part_2.total}")
+    print(format_solution(solve(FILENAME), solution_part_2.total))

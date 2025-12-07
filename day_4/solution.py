@@ -1,3 +1,6 @@
+from format_solutions import format_solution
+
+
 class Grid:
     def __init__(self, rows: list[list[str]]):
         self.rows = rows
@@ -81,5 +84,5 @@ with open("input.txt") as f:
 
 grid = Grid(lst_)
 
-print(f"Part 1 solution: {grid.count_accessible_rolls()}")
-print(f"Part 2 solution: {grid.max_removable_rolls()}")
+if __name__ == "__main__":
+    print(format_solution(grid.count_accessible_rolls(), grid.max_removable_rolls()))

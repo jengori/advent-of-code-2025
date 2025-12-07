@@ -1,3 +1,6 @@
+from format_solutions import format_solution
+
+
 def get_input(filename):
     with open(filename) as f:
         banks = [[int(n) for n in line] for line in f.read().splitlines()]
@@ -35,5 +38,5 @@ def solve_part_2(banks):
 
 banks_ = get_input("input.txt")
 
-print(f"Solution for part 1: {solve_part_1(banks_)}")
-print(f"Solution for part 2: {solve_part_2(banks_)}")
+if __name__ == "__main__":
+    print(format_solution(solve_part_1(banks_), solve_part_2(banks_)))

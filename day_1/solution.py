@@ -1,3 +1,6 @@
+from format_solutions import format_solution
+
+
 class Dial:
     def __init__(self, highest = 99, start_pos=50):
         self.limit = highest
@@ -24,6 +27,7 @@ class Dial:
         return password
 
     def solve_part_2(self, rotations: list):
+        self.set_pos(50)
         password = 0
 
         for rotation in rotations:
@@ -47,6 +51,6 @@ with open('input.txt', 'r') as f:
     r = [int(line.strip()[1:]) if line[0] == "R" else -int(line.strip()[1:])  for line in f.readlines()]
 
 dial = Dial()
-print(f"Part 1 solution: {dial.solve_part_1(r)}")
-dial.set_pos(50)
-print(f"Part 2 solution: {dial.solve_part_2(r)}")
+
+if __name__ == "__main__":
+    print(format_solution(dial.solve_part_1(r), dial.solve_part_2(r)))

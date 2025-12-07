@@ -1,3 +1,5 @@
+from format_solutions import format_solution
+
 FILENAME = 'input.txt'
 
 def merge_overlapping(lst:list[tuple[int, int]]) -> list[tuple[int, int]]:
@@ -52,5 +54,4 @@ def solve_part_2():
     return fresh
 
 if __name__ == '__main__':
-    print(f'Part 1 solution: {solve_part_1()}')
-    print(f'Part 2 solution: {solve_part_2()}')
+    print(format_solution(solve_part_1(), solve_part_2()))
