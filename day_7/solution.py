@@ -8,7 +8,6 @@ class Manifold:
         self.grid = grid
         self.s_col = grid[0].index("S")
         self.width = self.height = len(self.grid)
-        self.solutions = self.solve()
 
     def solve(self):
         current = [0] * self.width
@@ -39,6 +38,8 @@ class Manifold:
 
 with open(FILENAME) as f:
     grid_ = [[char for char in line] for line in f.read().splitlines()]
+    manifold = Manifold(grid_)
 
-manifold = Manifold(grid_)
-print(format_solution(manifold.solutions[0], manifold.solutions[1]))
+if __name__ == "__main__":
+    solutions = manifold.solve()
+    print(format_solution(solutions[0], solutions[1]))
