@@ -52,7 +52,6 @@ class Manifold:
         return possible_worlds
 
 
-
 with open(FILENAME) as f:
     grid_ = [[char for char in line] for line in f.read().splitlines()]
 
